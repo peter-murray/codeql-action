@@ -1,0 +1,35 @@
+import test from "ava";
+
+import { ResolveBuildEnvironmentOutput } from "./codeql";
+import * as resolveEnvironment from "./resolve-environment";
+
+test("inferRunnerImage inserts runnerImage key", async (t) => {
+  t.assert(
+    resolveEnvironment.inferRunnerImage({ name: "windows" }).runnerImage ===
+      "windows-latest",
+    "Result does not contain expected runnerImage"
+  );
+  t.assert(
+    resolveEnvironment.inferRunnerImage({ name: "linux" }).runnerImage ===
+      "ubuntu-latest",
+    "Result does not contain expected runnerImage"
+  );
+  t.assert(
+    resolveEnvironment.inferRunnerImage({ name: "macos" }).runnerImage ===
+      "macos-latest",
+    "Result does not contain expected runnerImage"
+  );
+});
+
+test("inferRunnerImages inserts runnerImage keys", async (t) => {
+  const testData: ResolveBuildEnvironmentOutput = {
+    configuration: {
+      csharp: { os: { name: "windows" } },
+      swift: { os: { name: "macos" } },
+    },
+  };
+  resolveEnvironment.inferRunnerImages(testData);
+
+  t.assert(testData.configuration?.csharp.os?.runnerImage, "blerg");
+
+});
