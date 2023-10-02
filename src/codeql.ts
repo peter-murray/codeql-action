@@ -975,7 +975,7 @@ export async function getCodeQLForCmd(
         "download",
         ...qlconfigArg,
         "--format=json",
-        "--resolve-query-specs",
+        "--no-resolve-query-specs",
         ...getExtraOptionsFromEnv(["pack", "download"]),
         ...packs,
       ];
